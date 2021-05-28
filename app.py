@@ -1,4 +1,4 @@
-from flask import Flask, redirect, render_template
+from flask import Flask, redirect, render_template, request, url_for
 
 app = Flask(__name__)
 
@@ -8,9 +8,13 @@ def landing():
     return render_template('index.html')
 
 
-@app.route('/signup')
+@app.route('/signup', methods=['POST', 'GET'])
 def register():
-    return render_template('register.html')
+
+
+@app.route("/main")
+def main():
+    return render_template("main.html")
 
 
 if __name__ == "__main__":
