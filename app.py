@@ -10,17 +10,18 @@ def landing():
     return render_template('index.html')
 
 
-@app.route('/signup',methods = ["GET","POST"])
+@app.route('/signup', methods=["GET", "POST"])
 def register():
     if request.method == "POST":
         email = request.form['email']
         password = request.form['password']
         db = sqlite3.connect("main.db")
-        cursor=db.cursor()
+        cursor = db.cursor()
         cursor.execute(f"SELECT email FROM main WHERE email = '{email}'")
         ting = cursor.fetchone()
         if ting == [] or ting == None:
-            cursor.execute(f"INSERT INTO main (email, password) VALUES ('{email}','{password}')")
+            cursor.execute(
+                f"INSERT INTO main (email, password) VALUES ('{email}','{password}')")
             db.commit()
             cursor.close()
             return redirect(url_for("login"))
@@ -28,18 +29,17 @@ def register():
             return render_template("accountalreadyexists.html")
     else:
         return render_template("register.html")
-       
-        
-    
 
-@app.route('/login',methods=["GET","POST"])
+
+@app.route('/login', methods=["GET", "POST"])
 def login():
     if request.method == "POST":
         email = request.form['email1']
         password = request.form['password1']
         db = sqlite3.connect("main.db")
-        cursor=db.cursor()
-        cursor.execute(f"SELECT email, password FROM main WHERE email = '{email}'")
+        cursor = db.cursor()
+        cursor.execute(
+            f"SELECT email, password FROM main WHERE email = '{email}'")
         info = cursor.fetchall()
         db.commit()
         cursor.close()
@@ -53,15 +53,19 @@ def login():
             else:
                 return render_template("loginerror.html")
     else:
-         return render_template("login.html")
-        
+        return render_template("login.html")
+
 
 @app.route("/main")
 def main():
     if 'user' in session:
         email = session["user"]
-    return render_template("main.html", email = email)
+    return render_template("main.html", email=email)
 
+
+@app.route("/listInformation")
+def information():
+    return render_template("eformation.html")
 
 
 if __name__ == "__main__":
